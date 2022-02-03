@@ -3,10 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import configAxios from './plugins/axios';
+import SnackBarProvider from './components/Snackbar';
+
+configAxios()
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SnackBarProvider>
+      <App />
+    </SnackBarProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
