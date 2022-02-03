@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from '../Copyright';
 import { SnackBarContext } from '../Snackbar'
 import Loader from '../Loader';
+import { jwtManager } from '../../helper/jwtManager'
 
 const theme = createTheme();
 
@@ -33,7 +34,9 @@ export default function SignIn() {
         try {
             let res = await axios.post('/user/login', data)
             console.log(res.data)
-            if (res.data.success) console.log('object')
+            if (res.data.success) {
+                jwtManager.set(res.data.token)
+            }
             else showMsg({ ...res.data })
         } catch (e) { showMsg({ status: 'error', message: 'Oops! something went wrong!' }) }
         finally {
