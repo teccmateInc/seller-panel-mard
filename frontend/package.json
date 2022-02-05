@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "homepage":"https://num1tonum.com",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.1",

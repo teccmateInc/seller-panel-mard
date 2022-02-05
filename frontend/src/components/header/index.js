@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -12,29 +12,38 @@ import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import { useNavigate } from 'react-router-dom'
-import { PAGES, SETTINGS } from '../../helper/constants'
+import { PAGES } from '../../helper/constants'
 import axios from 'axios'
 import Loader from '../Loader'
 import { SnackBarContext } from '../Snackbar'
 import { jwtManager } from '../../helper/jwtManager'
 
 const Header = ({ children }) => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null)
-  const [anchorElUser, setAnchorElUser] = React.useState(null)
-  const { showMsg } = React.useContext(SnackBarContext)
+  const [anchorElNav, setAnchorElNav] = useState(null)
+  const [anchorElUser, setAnchorElUser] = useState(null)
+  const { showMsg } = useContext(SnackBarContext)
   const navigate = useNavigate()
-  const [loading, setLoading] = React.useState(false)
-  let { username, type } = jwtManager.getUser()
-
-  React.useEffect(() => {}, [jwtManager.getUser()])
+  const [loading, setLoading] = useState(false)
+  const [type, setType] = useState(null)
+  const [username, setUsername] = useState(null)
+  let {jwtToken} = jwtManager.get()
+  
+  useEffect(() => {
+    if (!jwtToken || jwtToken === 'undefined') navigate('/login', { replace: true })
+    else {
+      let { username, type } = jwtManager.getUser()
+      setType(type)
+      setUsername(username)
+    }
+  }, [])
 
   let pages =
     type === 'admin'
       ? [
-          ...PAGES,
-          { title: 'Create User', url: 'create-user' },
-          { title: 'Users', url: 'all-users' },
-        ]
+        ...PAGES,
+        { title: 'Create User', url: 'create-user' },
+        { title: 'Users', url: 'all-users' },
+      ]
       : PAGES
 
   const handleOpenNavMenu = (event) => {
