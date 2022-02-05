@@ -1,1 +1,1 @@
-module.exports = {cookieExpire: '5'};
+module.exports = { cookieExpire: '5' }

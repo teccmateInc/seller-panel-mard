@@ -1,35 +1,57 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Copyright from '../Copyright';
+import * as React from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Box from '@mui/material/Box'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Copyright from '../Copyright'
+import { strictNonEmptyObjectValues } from '../../helper/utils'
+import { SnackBarContext } from '../Snackbar'
+import Loader from '../Loader'
+import axios from 'axios'
 
-const theme = createTheme();
+const theme = createTheme()
 
 export default function ChangePassword() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
+  const { showMsg } = React.useContext(SnackBarContext)
+  const [loading, setLoading] = React.useState(false)
+
+  const validated = (data) => {
+    let fields = {
       newpassword: data.get('newpassword'),
       password: data.get('password'),
-    });
-  };
+    }
+    return strictNonEmptyObjectValues(fields) ? fields : false
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setLoading(true)
+    const formdata = new FormData(event.currentTarget)
+    // eslint-disable-next-line no-console
+    try {
+      let validData = validated(formdata)
+      if (validData) {
+        let { data } = await axios.post('/user/update-password', validData)
+        if (data) showMsg(data)
+      } else {
+        showMsg({ status: 'error', message: 'All fields required!' })
+      }
+    } catch (e) {
+      showMsg({ status: 'error', message: 'Oops! Something went wrong.' })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      {loading && <Loader />}
+      <Container component='main' maxWidth='xs'>
         <CssBaseline />
         <Box
           sx={{
@@ -42,38 +64,40 @@ export default function ChangePassword() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component='h1' variant='h5'>
             Change Password
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component='form'
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
-              margin="normal"
+              margin='normal'
               required
               fullWidth
-              name="newpassword"
-              label="New Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              name='newpassword'
+              label='New Password'
+              type='password'
+              id='newpassword'
+              autoComplete='current-password'
+              autoFocus
             />
             <TextField
-              margin="normal"
+              margin='normal'
               required
               fullWidth
-              name="password"
-              label="Confirm Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              name='password'
+              label='Confirm Password'
+              type='password'
+              id='password'
+              autoComplete='current-password'
             />
             <Button
-              type="submit"
+              type='submit'
               fullWidth
-              variant="contained"
+              variant='contained'
               sx={{ mt: 3, mb: 2 }}
             >
               Update
@@ -83,5 +107,5 @@ export default function ChangePassword() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
-  );
+  )
 }
