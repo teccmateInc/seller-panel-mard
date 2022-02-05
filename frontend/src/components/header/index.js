@@ -26,25 +26,26 @@ const Header = ({ children }) => {
   const [loading, setLoading] = useState(false)
   const [type, setType] = useState(null)
   const [username, setUsername] = useState('')
-  let {jwtToken} = jwtManager.get()
-  
+  let { jwtToken } = jwtManager.get()
+
   useEffect(() => {
-    if (!jwtToken || jwtToken === 'undefined') navigate('/login', { replace: true })
+    if (!jwtToken || jwtToken === 'undefined')
+      navigate('/login', { replace: true })
     else {
       let { username, type } = jwtManager.getUser()
       console.log(username)
       setType(type)
       setUsername(username)
     }
-  }, [jwtToken,username])
+  }, [jwtToken, username])
 
   let pages =
     type === 'admin'
       ? [
-        ...PAGES,
-        { title: 'Create User', url: 'create-user' },
-        { title: 'Users', url: 'all-users' },
-      ]
+          ...PAGES,
+          { title: 'Create User', url: 'create-user' },
+          { title: 'Users', url: 'all-users' },
+        ]
       : PAGES
 
   const handleOpenNavMenu = (event) => {
