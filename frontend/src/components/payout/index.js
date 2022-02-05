@@ -45,14 +45,15 @@ const Payout = () => {
       let validData = validated(formdata)
       if (validData) {
         let { data } = await axios.post('/pay', validData)
+        setLoading(false)
         if (data) showMsg(data)
         if (data.success) navigate('/')
       } else {
+        setLoading(false)
         showMsg({ status: 'error', message: 'All fields required!!' })
       }
     } catch (e) {
       showMsg({ status: 'error', message: 'Oops! Something went wrong.' })
-    } finally {
       setLoading(false)
     }
   }

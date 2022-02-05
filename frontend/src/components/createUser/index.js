@@ -48,7 +48,7 @@ export default function CreateUser() {
           showMsg({ ...res.data })
           res.data.success && navigate('/all-users')
         }
-      }
+      } else setLoading(false)
     } catch (e) {
       setLoading(false)
       showMsg({ status: 'error', message: 'Oops! something went wrong!' })
