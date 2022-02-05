@@ -19,7 +19,7 @@ exports.GetUsers = async (_, res) => {
         data: users,
       })
     } else {
-      handleErrorWithStatus(res, 404, 'User not found!')
+      handleErrorWithStatus(res, 200, 'User not found!')
     }
   } catch (err) {
     handleError(res, 'Something wents wrong. Try again later!')
@@ -36,7 +36,7 @@ exports.GetPayments = async (_, res) => {
         data: payments,
       })
     } else {
-      handleErrorWithStatus(res, 404, 'No payments found!', { status: 'info' })
+      handleErrorWithStatus(res, 200, 'No payments found!', { status: 'info' })
     }
   } catch (err) {
     handleError(res, 'Something wents wrong. Try again later!')
