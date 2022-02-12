@@ -3,7 +3,8 @@ import { jwtManager } from '../helper/jwtManager'
 
 // Add a request interceptor
 export default function configAxios() {
-  axios.defaults.baseURL = 'https://btc-seller.herokuapp.com/api/'
+  axios.defaults.baseURL =
+    'https://btc-seller.herokuapp.com/api/'
   // process.env.REACT_APP_API || 'http://localhost:5000/api/'
   axios.interceptors.request.use(
     (config) => {

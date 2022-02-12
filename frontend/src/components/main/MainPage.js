@@ -6,10 +6,11 @@ import Loader from '../Loader'
 import { SnackBarContext } from '../Snackbar'
 import { jwtManager } from '../../helper/jwtManager'
 import { MenuItem, Select } from '@mui/material'
+import NoData from '../NoData'
 
 const MainPage = () => {
   const { showMsg } = useContext(SnackBarContext)
-  let [laoding, setLoading] = useState(false)
+  let [loading, setLoading] = useState(false)
   let [data, setData] = useState(null)
   let user = jwtManager.getUser()
   useEffect(async () => {
@@ -23,10 +24,11 @@ const MainPage = () => {
       let { data } = await axios.get(url)
       if (data.success) setData(data.data)
       else showMsg(data)
+      setLoading(false)
     } catch (e) {
       showMsg({ status: 'error', message: 'Oops! something went wrong!' })
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const updateStatus = async (id, status) => {
@@ -45,10 +47,21 @@ const MainPage = () => {
   }
 
   return (
-    <div style={{ height: 400, width: '80%', marginTop: 8, padding: 48 }}>
-      {laoding && <Loader />}
+    <div style={{ height: 400, marginTop: 8, padding: 48, width: user.type === 'admin' ? 'auto' : '75%' }}>
+      {loading && <Loader />}
       <DataGrid
         columns={[
+          {
+            field: 'user',
+            headerName: 'User Name',
+            width: 280,
+            align: 'center',
+            headerAlign: 'center',
+            hide: user.type !== 'admin',
+            renderCell: (params) => {
+              return <>{params.row?.user?.username ?? ''}</>
+            }
+          },
           {
             field: 'createdAt',
             headerName: 'Payment Date',
@@ -67,7 +80,7 @@ const MainPage = () => {
           {
             field: 'amount',
             headerName: 'Amount',
-            width: 280,
+            width: 240,
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => {
@@ -78,7 +91,7 @@ const MainPage = () => {
           {
             field: 'status',
             headerName: 'Status',
-            width: 280,
+            width: 240,
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => {
@@ -94,7 +107,8 @@ const MainPage = () => {
                     }}
                   >
                     <MenuItem value='pending'>Pending</MenuItem>
-                    <MenuItem value='done'>Done</MenuItem>
+                    <MenuItem value='confirm'>Confirm</MenuItem>
+                    <MenuItem value='cancel'>Cancel</MenuItem>
                   </Select>
                 )
               } else return params.value
@@ -103,6 +117,7 @@ const MainPage = () => {
         ]}
         rows={data || []}
         getRowId={(row) => row._id}
+        components={{ NoRowsOverlay: () => <NoData title='No payment yet!' loading={loading} /> }}
       />
     </div>
   )

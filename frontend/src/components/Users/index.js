@@ -7,11 +7,12 @@ import Loader from '../Loader'
 import { SnackBarContext } from '../Snackbar'
 import { jwtManager } from '../../helper/jwtManager'
 import { useNavigate } from 'react-router-dom'
+import NoData from '../NoData'
 
 const Users = () => {
   const { showMsg } = useContext(SnackBarContext)
   const navigate = useNavigate()
-  let [laoding, setLoading] = useState(false)
+  let [loading, setLoading] = useState(false)
   let [data, setData] = useState(null)
   useEffect(async () => {
     fetchUsers()
@@ -42,8 +43,8 @@ const Users = () => {
   }
 
   return (
-    <div style={{ height: 400, width: '80%', marginTop: 8, padding: 48 }}>
-      {laoding && <Loader />}
+    <div style={{ height: 400, width: '68%', marginTop: 8, padding: 48 }}>
+      {loading && <Loader />}
       <DataGrid
         columns={[
           {
@@ -92,6 +93,7 @@ const Users = () => {
         ]}
         rows={data || []}
         getRowId={(row) => row._id}
+        components={{ NoRowsOverlay: () => <NoData title='No User created yet!' loading={loading} /> }}
       />
     </div>
   )

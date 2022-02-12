@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
 import Container from '@mui/material/Container'
-import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
@@ -33,7 +32,7 @@ const Header = ({ children }) => {
       navigate('/login', { replace: true })
     else {
       let { username, type } = jwtManager.getUser()
-      console.log(username)
+      // console.log(username)
       setType(type)
       setUsername(username)
     }
@@ -42,10 +41,10 @@ const Header = ({ children }) => {
   let pages =
     type === 'admin'
       ? [
-          ...PAGES,
-          { title: 'Create User', url: 'create-user' },
-          { title: 'Users', url: 'all-users' },
-        ]
+        ...PAGES,
+        { title: 'Create User', url: 'create-user' },
+        { title: 'Users', url: 'all-users' },
+      ]
       : PAGES
 
   const handleOpenNavMenu = (event) => {
@@ -151,7 +150,7 @@ const Header = ({ children }) => {
               component='div'
               sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
             >
-              LOGO
+              BTC Seller
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map(({ url, title }, i) => (
@@ -167,12 +166,9 @@ const Header = ({ children }) => {
 
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title='More Options'>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    alt={username.charAt(0).toLocaleUpperCase()}
-                    src='/static/images/avatar/2.jpg'
-                  />
-                </IconButton>
+                <Button onClick={handleOpenUserMenu} sx={{ p: 0, color: '#fff' }}>
+                  {username}
+                </Button>
               </Tooltip>
               <Menu
                 sx={{ mt: '45px' }}

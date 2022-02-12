@@ -111,7 +111,7 @@ export default function CreateUser() {
               >
                 <MenuItem value={'admin'}>Admin</MenuItem>
                 <MenuItem value={'seller'}>Seller</MenuItem>
-                <MenuItem value={'buyer'}>Buyer</MenuItem>
+                {/* <MenuItem value={'buyer'}>Buyer</MenuItem> */}
               </Select>
             </FormControl>
             <Button

@@ -36,3 +36,64 @@
     transform: rotate(360deg);
   }
 }
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.msg {
+  /* width: 300px;
+  margin: 50px auto; */
+  background: #82add3;
+  padding: 8px 12px;
+  font-weight: 900;
+  color: #fff;
+  font-family: arial;
+  position: relative;
+}
+
+.sb1:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 6px solid #82add3;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #82add3;
+  border-bottom: 6px solid transparent;
+  right: -12px;
+  top: 2px;
+}
+
+.sb2:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 6px solid transparent;
+  border-right: 6px solid #bbc3c3;
+  border-top: 6px solid #bbc3c3;
+  border-bottom: 6px solid transparent;
+  left: -12px;
+  top: 2px;
+}
+
+.othermsg{
+  background: #bbc3c3;
+}
+
+.msg-container .MuiOutlinedInput-root,
+.msg-container button{
+  border-radius: 0;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hidescroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hidescroll {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

@@ -4,7 +4,7 @@ import { makeStyles } from '@mui/styles'
 
 let useStyles = makeStyles((theme) => ({
   backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: 1401,
     color: '#fff',
   },
 }))
